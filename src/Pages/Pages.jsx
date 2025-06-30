@@ -1,11 +1,12 @@
-import {Route, Routes} from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 
 function Pages() {
   return (
     <div>Pages
-    <Routes>
-        
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/superadmindashboard" element={<SuperAdminDashboard />} />
+      </Routes>
     </div>
   )
 }
