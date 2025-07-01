@@ -1,40 +1,28 @@
 import { useState } from "react";
-// import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 
 const DEFAULT_EMAIL = "james@red.com";
 const DEFAULT_PASSWORD = "James@11";
 
 
-function Login({ onLogin }) {
+function Login() {
   const [email, setEmail] = useState(DEFAULT_EMAIL);
   const [password, setPassword] = useState(DEFAULT_PASSWORD);
-  // const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
   // const [error, setError] = useState("");
 
-  // const userValidation = async (email, password) => {
-  //   // Example: Replace with your actual authentication logic
-  //   // Simulate a database check
-  //   return email === DEFAULT_EMAIL && password === DEFAULT_PASSWORD;
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const isAuthenticated = await userValidation(email, password);
-  //   if (isAuthenticated) {
-  //     // setError("");
-  //     // navigate("/superadmin-dashboard"); // Redirect to dashboard
-  //   } else {
-  //     // setError("Invalid email or password.");
-  //   }
-  //   };
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      // Add real authentication logic here
-      if (email && password) {
-        onLogin();
-      }
-    };
+  // Simple validation (replace with real auth logic as needed)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email === DEFAULT_EMAIL && password === DEFAULT_PASSWORD) {
+      navigate("/dashboard");
+    } else {
+      // Optionally show error message
+      // setError("Invalid email or password.");
+      alert("Invalid email or password.");
+    }
+  };
 
     return (
       <div className="h-screen flex items-center justify-center bg-black">

@@ -1,0 +1,1 @@
+export { default as Profile_Img } from "../assets/profile.png";
