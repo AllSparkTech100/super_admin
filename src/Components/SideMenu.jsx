@@ -3,12 +3,12 @@ import {
   Menu,
   X,
   LayoutDashboard,
-  MessageSquare,
-  CreditCard,
-  FileText,
-  Calendar,
-  Clock
-} from 'lucide-react';
+  Users,
+  MessagesSquare,
+  ChartNoAxesCombined,
+  ClipboardMinus,
+  Settings,
+  } from 'lucide-react';
 import { Link } from "react-router-dom";
 
 
@@ -18,12 +18,13 @@ function SideMenu() {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/parent-dashboard' },
-    { icon: MessageSquare, label: 'Messages', href: '/parent-messages' },
-    { icon: CreditCard, label: 'Payments', href: '/parent-payments' },
-    { icon: FileText, label: 'Result', href: '/parent-results' },
-    { icon: Calendar, label: 'Attendance', href: '/parent-attendance' },
-    { icon: Clock, label: 'Timetable', href: '/parent-timetable' },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
+    { icon: Users, label: 'Users', href: '/users' },
+    { icon: MessagesSquare, label: 'Messages', href: '/messages' },
+    { icon: ClipboardMinus, label: 'Reports', href: '/reports' },
+    { icon: ChartNoAxesCombined, label: 'Analytics', href: '/analytics' },
+    { icon: Settings, label: 'Settings', href: '/settings' },
+
   ];
   return (
     <div className="relative">
@@ -96,3 +97,22 @@ function SideMenu() {
 }
 
 export default SideMenu
+
+
+// <header className="bg-white shadow-sm border-b border-gray-200">
+//               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//                   <div className="flex justify-between items-center h-16">
+//                       <div className="flex items-center">
+//                           <Shield className="w-8 h-8 text-blue-600 mr-3" />
+//                           <h1 className="text-xl capitalize font-semibold text-gray-900">Ilearnova CMS Dashboard</h1>
+//                       </div>
+//                       <div className="flex items-center space-x-4">
+//                           <button className="bg-blue-600 lg:cursor-pointer text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center">
+//                               <Plus className="w-4 h-4 mr-2" />
+//                               Generate Code
+//                           </button>
+//                           <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+//                       </div>
+//                   </div>
+//               </div>
+//           </header>
