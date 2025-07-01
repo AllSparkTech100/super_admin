@@ -20,6 +20,7 @@ function Pages() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="*" element={<Error />} />
         {/* <Route path="/superadmindashboard" element={<SuperAdminDashboard />} /> */}
       </Routes>
     </>

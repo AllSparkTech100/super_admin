@@ -14,14 +14,41 @@ const Dashboard = () => {
     const storedName = localStorage.getItem('adminName');
     setAdminName(storedName || 'Admin');
   }, []);
-  // Data for the pie chart
-  const chartData = [
-    { name: 'Exam', value: 40, color: '#10B981' },
-    { name: 'Engagement', value: 25, color: '#EF4444' },
-    { name: 'Performance', value: 20, color: '#F59E0B' },
-    { name: 'Productivity', value: 10, color: '#8B5CF6' },
-    { name: 'Others', value: 5, color: '#6B7280' }
+  // Pie chart data sets for animation
+  const pieDataSets = [
+    [
+      { name: 'Sales', value: 40, color: '#34A853' },
+      { name: 'Engagement', value: 25, color: '#EA4335' },
+      { name: 'Performance', value: 20, color: '#FBC02D' },
+      { name: 'Productivity', value: 10, color: '#4285F4' },
+      { name: 'Others', value: 5, color: '#A0AEC0' }
+    ],
+    [
+      { name: 'Sales', value: 30, color: '#34A853' },
+      { name: 'Engagement', value: 30, color: '#EA4335' },
+      { name: 'Performance', value: 25, color: '#FBC02D' },
+      { name: 'Productivity', value: 10, color: '#4285F4' },
+      { name: 'Others', value: 5, color: '#A0AEC0' }
+    ],
+    [
+      { name: 'Sales', value: 35, color: '#34A853' },
+      { name: 'Engagement', value: 20, color: '#EA4335' },
+      { name: 'Performance', value: 25, color: '#FBC02D' },
+      { name: 'Productivity', value: 15, color: '#4285F4' },
+      { name: 'Others', value: 5, color: '#A0AEC0' }
+    ]
   ];
+
+  const [pieIndex, setPieIndex] = useState(0);
+  const chartData = pieDataSets[pieIndex];
+
+  // Cycle through pie chart data every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPieIndex(prev => (prev + 1) % pieDataSets.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [pieDataSets.length]);
 
   const stats = [
     {
@@ -172,54 +199,48 @@ const Dashboard = () => {
         })}
       </div>
 
-      {/* Chart Section */}
-      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm mt-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Course Distribution Report Overview</h3>
-        <div className="flex flex-col lg:flex-row gap-8 items-center">
-          {/* Chart */}
-          <div className="w-full flex justify-center lg:w-1/2">
-            <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={120}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-              {/* Center text */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">100%</div>
-                  <div className="text-sm text-gray-600">Total</div>
-                </div>
-              </div>
-            </div>
+      {/* Animated Pie Chart Section with labels inside each section */}
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm mt-6 flex flex-col items-center">
+        <div className="w-full flex flex-col items-center">
+          <div className="relative w-full max-w-lg aspect-square flex items-center justify-center">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={0}
+                  outerRadius={180}
+                  label={({ cx, cy, midAngle, innerRadius, outerRadius, index }) => {
+                    const RADIAN = Math.PI / 180;
+                    const radius = innerRadius + (outerRadius - innerRadius) * 0.7;
+                    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                    return (
+                      <text
+                        x={x}
+                        y={y}
+                        fill="#222"
+                        textAnchor={x > cx ? 'start' : 'end'}
+                        dominantBaseline="central"
+                        fontSize={20}
+                        fontWeight="bold"
+                      >
+                        {chartData[index].value}%\n<tspan fontSize={14} fontWeight="normal">{chartData[index].name}</tspan>
+                      </text>
+                    );
+                  }}
+                  labelLine={false}
+                  dataKey="value"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          {/* Legend */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-4">
-            {chartData.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: item.color }}
-                  ></div>
-                  <span className="text-sm font-medium text-gray-700">{item.name}</span>
-                </div>
-                <span className="text-sm font-bold text-gray-900">{item.value}%</span>
-              </div>
-            ))}
-          </div>
+          <div className="mt-2 text-center text-xs text-gray-600">Category Distribution of Reports Generated</div>
         </div>
       </div>
     </main>
