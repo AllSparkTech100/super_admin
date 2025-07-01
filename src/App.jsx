@@ -7,18 +7,21 @@ import Pages from "./Pages/Pages";
 
 
 
+
+import { useLocation } from "react-router-dom";
+
 function App() {
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/";
 
   return (
     <>
       <div className="flex gap">
-        <SideMenu />
-        <main className="lg:p-0 bg-[#f5f8fe] p-3 flex-1 flex-col">
+        {!isLoginPage && <SideMenu />}
+        <main className="lg:p-0 bg-[#f5f8fe]  flex-1 flex-col w-full">
           <Pages />
         </main>
-
       </div>
-
     </>
   );
 }
