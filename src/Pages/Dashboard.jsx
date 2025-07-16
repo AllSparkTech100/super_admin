@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { Users, Target, Calendar, TrendingUp, TrendingDown, BarChart3, FileText, Bell, Settings, ChevronDown } from 'lucide-react';
-import { Profile_Img } from "../lib/Images";
+import { Users, Target, Calendar, TrendingUp, TrendingDown, BarChart3, FileText, Bell, Settings, ChevronDown, Plus } from 'lucide-react';
+import Header from '../Components/Header';
+
 
 const Dashboard = () => {
   // Get admin name from localStorage or fallback
-  const [adminName, setAdminName] = useState('Admin');
-  const [search, setSearch] = useState('');
-  const [searchResult, setSearchResult] = useState('');
+  const [adminName, setAdminName] = useState('Patrick Joe');
+  const [showQuickActions, setShowQuickActions] = useState(false);
 
   useEffect(() => {
     // Example: get user name from localStorage or auth context
     const storedName = localStorage.getItem('adminName');
-    setAdminName(storedName || 'Admin');
+    setAdminName(storedName || 'Patrick Joe');
   }, []);
   // Pie chart data sets for animation
   const pieDataSets = [
@@ -104,45 +104,7 @@ const Dashboard = () => {
   return (
     <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div>
-          <div className="text-xs text-gray-500">Page/Student Portal</div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-        </div>
-        {/* Search bar and profile */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <form
-            className="flex items-center bg-white border border-gray-300 rounded-full px-2 py-1 w-full max-w-xs"
-            onSubmit={e => {
-              e.preventDefault();
-              setSearchResult(search);
-            }}
-          >
-            <input
-              type="text"
-              placeholder="Search..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="bg-transparent outline-none px-2 py-1 flex-1 text-sm"
-            />
-            <button type="submit" className="text-gray-500 px-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-              </svg>
-            </button>
-          </form>
-          {/* Profile */}
-          <div className="flex items-center gap-2">
-            {/* <span className="hidden sm:block text-sm text-gray-700 font-medium">{adminName}</span> */}
-            <img
-              src={Profile_Img}
-              loading='lazy'
-              alt="Profile"
-              className="w-8 h-8 rounded-full border border-gray-200 object-cover"
-            />
-          </div>
-        </div>
-      </div>
+      <Header />
 
       {/* Welcome and Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
@@ -150,22 +112,40 @@ const Dashboard = () => {
           <span className="text-sm text-gray-700">Welcome back,</span>
           <span className="block text-lg font-bold text-blue-700">{adminName}</span>
         </div>
-        <div className="flex gap-3">
-          <button className="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+        <div className="flex gap-3 relative">
+          <button className="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            type="button"
+          >
             <FileText className="w-4 h-4" />
             <span>Check Report</span>
           </button>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2">
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2"
+            type="button"
+            onClick={() => setShowQuickActions(v => !v)}
+          >
             <Settings className="w-4 h-4" />
             <span>Quick Actions</span>
           </button>
+          {showQuickActions && (
+            <div className="absolute right-0 top-12 z-10 bg-white border border-gray-200 rounded-lg shadow-lg w-56 py-2 animate-fade-in">
+              <button className="w-full flex items-center px-4 py-2 hover:bg-blue-50 focus:bg-blue-100 transition text-gray-800 text-sm">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 mr-3">
+                  <Plus className="w-5 h-5 text-white" />
+                </span>
+                Add New User
+              </button>
+              <button className="w-full flex items-center px-4 py-2 hover:bg-blue-50 focus:bg-blue-100 transition text-gray-800 text-sm">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 mr-3">
+                  <Plus className="w-5 h-5 text-white" />
+                </span>
+                Export User
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Search Result (optional) */}
-      {searchResult && (
-        <div className="mb-4 text-sm text-gray-600">Search result for: <span className="font-semibold">{searchResult}</span></div>
-      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -240,7 +220,7 @@ const Dashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 text-center text-xs text-gray-600">Category Distribution of Reports Generated</div>
+          <div className="mt-2 text-center text-xs lg:text-2xl text-gray-600">Category Distribution of Reports Generated</div>
         </div>
       </div>
     </main>

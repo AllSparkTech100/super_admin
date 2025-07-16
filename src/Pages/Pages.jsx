@@ -7,6 +7,7 @@ import Messages from "./Messages"
 import Reports from "./Reports"
 import Settings from "./Settings"
 import Users from "./Users"
+import Signup from "./Signup"
 
 function Pages() {
   return (
@@ -14,6 +15,7 @@ function Pages() {
     <>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
         <Route path="/messages" element={<Messages />} />
@@ -21,7 +23,6 @@ function Pages() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Error />} />
-        {/* <Route path="/superadmindashboard" element={<SuperAdminDashboard />} /> */}
       </Routes>
     </>
 
